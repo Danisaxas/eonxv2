@@ -1,86 +1,42 @@
 <?php
-// Incluir el archivo de configuración
-require_once 'config/config.php';
 
-// Incluir la función para enviar mensajes
-require_once 'utils.php';
+$config = require __DIR__ . '/config/config.php';
 
-// Definir el directorio de plugins (comandos)
-define('PLUGINS_DIR', 'addons');
+// Obtener contenido del webhook
+$content = file_get_contents("php://input");
+$update = json_decode($content, true);
 
-// La URL de la API de Telegram usando el token del archivo de configuración
-$api_url = "https://api.telegram.org/bot" . BOT_TOKEN . "/";
-
-// Función para hacer peticiones a la API de Telegram
-function sendRequest($method, $params = []) {
-    global $api_url;
-    $url = $api_url . $method;
-    if ($params) {
-        $url .= '?' . http_build_query($params);
-    }
-
-    $response = file_get_contents($url);
-    return json_decode($response, true);
+// Verificar si el mensaje es válido
+if (!isset($update["message"])) {
+    exit;
 }
 
-// Obtener las actualizaciones (mensajes)
-function getUpdates() {
-    return sendRequest('getUpdates');
+$message = $update["message"];
+$chat_id = $message["chat"]["id"];
+$text = $message["text"] ?? '';
+
+// Si el comando es /start
+if ($text === "/start") {
+    $reply = "¡Hola! Soy tu bot en PHP 🚀";
+    enviarMensaje($chat_id, $reply, $config['bot_token']);
 }
 
-// Enviar un mensaje
-function sendMessage($chat_id, $text) {
-    sendRequest('sendMessage', [
+function enviarMensaje($chat_id, $text, $token) {
+    $url = "https://api.telegram.org/bot{$token}/sendMessage";
+
+    $data = [
         'chat_id' => $chat_id,
-        'text' => $text
-    ]);
+        'text' => $text,
+    ];
+
+    $options = [
+        "http" => [
+            "header"  => "Content-Type: application/json",
+            "method"  => "POST",
+            "content" => json_encode($data),
+        ]
+    ];
+
+    $context = stream_context_create($options);
+    file_get_contents($url, false, $context);
 }
-
-// Cargar un plugin de comandos
-function loadPlugin($plugin) {
-    $pluginPath = PLUGINS_DIR . '/' . $plugin . '.php';
-    
-    if (file_exists($pluginPath)) {
-        require_once $pluginPath;
-        return true;
-    }
-    return false;
-}
-
-// Función principal
-function processUpdates() {
-    $updates = getUpdates();
-
-    if (isset($updates['result'])) {
-        foreach ($updates['result'] as $update) {
-            if (isset($update['message'])) {
-                $chat_id = $update['message']['chat']['id'];
-                $message_text = $update['message']['text'];
-
-                // Verificar si el mensaje contiene un comando
-                $command = strtolower(trim($message_text));
-                
-                if (strpos($command, '/') === 0) { // Si es un comando
-                    $command = substr($command, 1); // Eliminar el '/' del comando
-
-                    // Cargar el plugin (comando) desde addons/user/
-                    if (loadPlugin("user/$command")) {
-                        // Llamar la función correspondiente dentro del plugin cargado
-                        $functionName = "handle" . ucfirst($command);
-                        if (function_exists($functionName)) {
-                            $functionName($chat_id);
-                        }
-                    } else {
-                        sendMessage($chat_id, "Comando no reconocido.");
-                    }
-                } else {
-                    sendMessage($chat_id, "No entendí tu mensaje.");
-                }
-            }
-        }
-    }
-}
-
-// Ejecutar el procesamiento de actualizaciones
-processUpdates();
-?>
