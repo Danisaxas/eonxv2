@@ -50,8 +50,8 @@ return_message: () => `Puedes volver a abrir el menú en 10 segundos`,
 
 delete_msg: () => `Podrás volver a usar el menú usando /start`,
 
-xcloud_text: (config, msg) => `
->_ $Comenzar_ ${config.botName} Welcome @${msg.from.username || msg.from.first_name}  - Cloud DB 
+xcloud_text: (config, user) => `
+>_ $Comenzar_ ${config.botName} Welcome @${user.username || user.first_name}  - Cloud DB 
 
 [🇪🇸] Bienvenido a la nueva suscripción de ${config.botName} Cloud, sus datos compartidos en la nube con ${config.botName} se almacenarán aquí, navegue a través de los botones para descubrir qué es lo nuevo que tenemos para usted:       
 
