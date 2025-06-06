@@ -1,9 +1,15 @@
 <?php
-// Reemplaza con el token de tu bot
-$token = '7508604877:AAGQA-yefPpvvUxyqFSRTgOVgiz9ZV_8R8o';
+// Incluir el archivo de configuración
+require_once 'config/config.php';
 
-// La URL de la API de Telegram
-$api_url = "https://api.telegram.org/bot$token/";
+// Incluir la función para enviar mensajes
+require_once 'utils.php';
+
+// Definir el directorio de plugins (comandos)
+define('PLUGINS_DIR', 'addons');
+
+// La URL de la API de Telegram usando el token del archivo de configuración
+$api_url = "https://api.telegram.org/bot" . BOT_TOKEN . "/";
 
 // Función para hacer peticiones a la API de Telegram
 function sendRequest($method, $params = []) {
@@ -30,6 +36,17 @@ function sendMessage($chat_id, $text) {
     ]);
 }
 
+// Cargar un plugin de comandos
+function loadPlugin($plugin) {
+    $pluginPath = PLUGINS_DIR . '/' . $plugin . '.php';
+    
+    if (file_exists($pluginPath)) {
+        require_once $pluginPath;
+        return true;
+    }
+    return false;
+}
+
 // Función principal
 function processUpdates() {
     $updates = getUpdates();
@@ -40,9 +57,22 @@ function processUpdates() {
                 $chat_id = $update['message']['chat']['id'];
                 $message_text = $update['message']['text'];
 
-                // Aquí puedes hacer que el bot responda según el mensaje
-                if (strtolower($message_text) == 'hola') {
-                    sendMessage($chat_id, "¡Hola! ¿Cómo estás?");
+                // Verificar si el mensaje contiene un comando
+                $command = strtolower(trim($message_text));
+                
+                if (strpos($command, '/') === 0) { // Si es un comando
+                    $command = substr($command, 1); // Eliminar el '/' del comando
+
+                    // Cargar el plugin (comando) desde addons/user/
+                    if (loadPlugin("user/$command")) {
+                        // Llamar la función correspondiente dentro del plugin cargado
+                        $functionName = "handle" . ucfirst($command);
+                        if (function_exists($functionName)) {
+                            $functionName($chat_id);
+                        }
+                    } else {
+                        sendMessage($chat_id, "Comando no reconocido.");
+                    }
                 } else {
                     sendMessage($chat_id, "No entendí tu mensaje.");
                 }
