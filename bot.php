@@ -1,12 +1,13 @@
 <?php
-// bot.php para Railway con token de prueba
-// Bot webhook sencillo para Telegram
-
 $TOKEN = '7508604877:AAGQA-yefPpvvUxyqFSRTgOVgiz9ZV_8R8o';
 $API_URL = "https://api.telegram.org/bot$TOKEN/";
 
 $input = file_get_contents('php://input');
 $update = json_decode($input, true);
+
+function writeLog($text) {
+    file_put_contents(__DIR__ . '/bot.log', date('c') . " - " . $text . "\n", FILE_APPEND);
+}
 
 function sendMessage($chat_id, $text) {
     global $API_URL;
@@ -30,7 +31,7 @@ function sendMessage($chat_id, $text) {
 if (isset($update["message"])) {
     $chat_id = $update["message"]["chat"]["id"];
     $text = $update["message"]["text"] ?? '';
-
+    writeLog("Recibido: " . $text . " de chat " . $chat_id);
     if (stripos($text, "/start") === 0) {
         sendMessage($chat_id, "¡Hola! Soy tu bot PHP en Railway 🚂");
     }
