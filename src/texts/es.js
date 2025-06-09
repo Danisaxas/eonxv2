@@ -50,6 +50,8 @@ return_message: () => `Puedes volver a abrir el menú en 10 segundos`,
 
 delete_msg: () => `Podrás volver a usar el menú usando /start`,
 
+  hola: () => `hola xd`,
+
 xcloud_text: (config, user) => `
 >_ $Comenzar_ ${config.botName} Welcome @${user.username || user.first_name}  - Cloud DB 
 
