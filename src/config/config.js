@@ -21,7 +21,7 @@ module.exports = {
     token: '7508604877:AAGQA-yefPpvvUxyqFSRTgOVgiz9ZV_8R8o',
     ownerId: 7732700923,
     botName: 'Eonx',
-    plugins_dict: 'addons',
+    plugins_dict: 'commands',
     onMessage: function(bot, findCommandFile) {
         return (msg) => {
             if (!msg.text) return;

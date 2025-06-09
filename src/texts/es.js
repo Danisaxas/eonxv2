@@ -18,7 +18,7 @@ Bienvenido ${config.botName} Bot  |  <code>${fechaMadrid}</code>
 🤖 Nombre del bot: ${config.botName}
 👤 Owner ID: ${config.ownerId}
 🌐 Desarrollado en Node.js
-🔧 Modular (comandos en addons/)
+🔧 Modular (comandos en commands/)
   `,
 
   tools_1: (config) => `
