@@ -1,14 +1,15 @@
 const moment = require('moment-timezone');
+const buttons = require('./button/es.js');
 
 module.exports = {
   start: (config, msg) => {
-  const fechaMadrid = moment().tz('Europe/Madrid').format('YYYY-MM-DD hh:mm:ss A [Madrid, España.]');
-  const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
+    const fechaMadrid = moment().tz('Europe/Madrid').format('YYYY-MM-DD hh:mm:ss A [Madrid, España.]');
+    const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
 
-  return `
+    return `
 Bienvenido ${config.botName} Bot  |  <code>${fechaMadrid}</code>
 
-[🇪🇸] Hola ${username} Bienvenido a ${config.botName} Telegram Bot, las puertas de enlace, las herramientas y las funciones se agregan constantemente, para saber que mis diferentes comandos usan los botones que se muestran aquí: 
+[🇪🇸] Hola ${username} Bienvenido a ${config.botName} Telegram Bot, las puertas de enlace, las herramientas y las funciones se agregan constantemente, para saber que mis diferentes comandos usan los botones que se muestran aquí:
 ━━━━━━━━━━━━━
 <code>Api Bot El estado es: Online ✅ | ${config.botName} Api ¡Está en línea!!</code>
 `;
@@ -46,17 +47,24 @@ Estado: <code>¡En línea! ✅</code>
 ━━━━━━━━━━━━
 `,
 
-return_message: () => `Puedes volver a abrir el menú en 10 segundos`,
+  return_message: () => `Puedes volver a abrir el menú en 10 segundos`,
 
-delete_msg: () => `Podrás volver a usar el menú usando /start`,
+  delete_msg: () => `Podrás volver a usar el menú usando /start`,
 
   hola: () => `hola xd`,
 
-xcloud_text: (config, user) => `
->_ $Comenzar_ ${config.botName} Welcome @${user.username || user.first_name}  - Cloud DB 
+  xcloud_text: (config, user) => `
+>_ $Comenzar_ ${config.botName} Welcome @${user.username || user.first_name}  - Cloud DB
 
-[🇪🇸] Bienvenido a la nueva suscripción de ${config.botName} Cloud, sus datos compartidos en la nube con ${config.botName} se almacenarán aquí, navegue a través de los botones para descubrir qué es lo nuevo que tenemos para usted:       
+[🇪🇸] Bienvenido a la nueva suscripción de ${config.botName} Cloud, sus datos compartidos en la nube con ${config.botName} se almacenarán aquí, navegue a través de los botones para descubrir qué es lo nuevo que tenemos para usted:
 
 <code>${config.botName} Cloud Version:  0.0.1</code>  | ${config.botName} Cloud Plan:  <code>Premium Cloud</code>
 `,
-}
+
+  all_buttons: () => ({
+    start: buttons.start(),
+    tools_bt: buttons.tools_bt(),
+    return_bt: buttons.return_bt(),
+    xcloud_bt: buttons.xcloud_bt(),
+  }),
+};
