@@ -1,10 +1,14 @@
-const moment = require('moment-timezone');
-const buttons = require('./button/es.js');
+const moment = require("moment-timezone");
+const buttons = require("./button/es.js");
 
 module.exports = {
   start: (config, msg) => {
-    const fechaMadrid = moment().tz('Europe/Madrid').format('YYYY-MM-DD hh:mm:ss A [Madrid, España.]');
-    const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
+    const fechaMadrid = moment()
+      .tz("Europe/Madrid")
+      .format("YYYY-MM-DD hh:mm:ss A [Madrid, España.]");
+    const username = msg.from.username
+      ? `@${msg.from.username}`
+      : msg.from.first_name;
 
     return `
 Bienvenido ${config.botName} Bot  |  <code>${fechaMadrid}</code>
