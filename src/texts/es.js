@@ -1,3 +1,4 @@
+qxrkn5-codex/crear-función-para-botones-en-texts/es.js
 const moment = require("moment-timezone");
 const buttons = require("./button/es.js");
 
@@ -9,6 +10,14 @@ module.exports = {
     const username = msg.from.username
       ? `@${msg.from.username}`
       : msg.from.first_name;
+=======
+const moment = require('moment-timezone');
+const buttons = require('./button/es.js');
+
+module.exports = {
+  start: (config, msg) => {
+    const fechaMadrid = moment().tz('Europe/Madrid').format('YYYY-MM-DD hh:mm:ss A [Madrid, España.]');
+    const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;master
 
     return `
 Bienvenido ${config.botName} Bot  |  <code>${fechaMadrid}</code>
@@ -72,6 +81,7 @@ Próximamente nuevas herramientas.
 <code>${config.botName} Cloud Version:  0.0.1</code>  | ${config.botName} Cloud Plan:  <code>Premium Cloud</code>
 `,
 
+qxrkn5-codex/crear-función-para-botones-en-texts/es.js
   gateways_text: () => `Lista de gateways próximamente`,
 
   informacion_text: (config) => module.exports.info(config),
@@ -85,6 +95,8 @@ Próximamente nuevas herramientas.
   estadisticasdb_text: () => `Estadísticas generales de la base de datos`,
 
   recompensas_text: () => `Sistema de recompensas pendiente`,
+=======
+  master
   all_buttons: () => ({
     start: buttons.start(),
     tools_bt: buttons.tools_bt(),
