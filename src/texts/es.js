@@ -1,10 +1,23 @@
+qxrkn5-codex/crear-función-para-botones-en-texts/es.js
+const moment = require("moment-timezone");
+const buttons = require("./button/es.js");
+
+module.exports = {
+  start: (config, msg) => {
+    const fechaMadrid = moment()
+      .tz("Europe/Madrid")
+      .format("YYYY-MM-DD hh:mm:ss A [Madrid, España.]");
+    const username = msg.from.username
+      ? `@${msg.from.username}`
+      : msg.from.first_name;
+=======
 const moment = require('moment-timezone');
 const buttons = require('./button/es.js');
 
 module.exports = {
   start: (config, msg) => {
     const fechaMadrid = moment().tz('Europe/Madrid').format('YYYY-MM-DD hh:mm:ss A [Madrid, España.]');
-    const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;
+    const username = msg.from.username ? `@${msg.from.username}` : msg.from.first_name;master
 
     return `
 Bienvenido ${config.botName} Bot  |  <code>${fechaMadrid}</code>
@@ -45,6 +58,13 @@ Chequeo de IP Fraudulenta:
 Formato: <code>$ip 1.1.1.1</code>
 Estado: <code>¡En línea! ✅</code>
 ━━━━━━━━━━━━
+  `,
+
+  tools_2: (config) => `
+Eonx Chk Herramientas / Página 2
+━━━━━━━━━━━━
+Próximamente nuevas herramientas.
+━━━━━━━━━━━━
 `,
 
   return_message: () => `Puedes volver a abrir el menú en 10 segundos`,
@@ -61,6 +81,22 @@ Estado: <code>¡En línea! ✅</code>
 <code>${config.botName} Cloud Version:  0.0.1</code>  | ${config.botName} Cloud Plan:  <code>Premium Cloud</code>
 `,
 
+qxrkn5-codex/crear-función-para-botones-en-texts/es.js
+  gateways_text: () => `Lista de gateways próximamente`,
+
+  informacion_text: (config) => module.exports.info(config),
+
+  xcommerce_text: () => `xCommerce en construcción`,
+
+  idioma_text: () => `Función de idioma disponible pronto`,
+
+  sitiosdb_text: () => `Listado de sitios de la base de datos`,
+
+  estadisticasdb_text: () => `Estadísticas generales de la base de datos`,
+
+  recompensas_text: () => `Sistema de recompensas pendiente`,
+=======
+  master
   all_buttons: () => ({
     start: buttons.start(),
     tools_bt: buttons.tools_bt(),
