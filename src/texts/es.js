@@ -81,7 +81,6 @@ Próximamente nuevas herramientas.
   estadisticasdb_text: () => `Estadísticas generales de la base de datos`,
 
   recompensas_text: () => `Sistema de recompensas pendiente`,
-
   all_buttons: () => ({
     start: buttons.start(),
     tools_bt: buttons.tools_bt(),
